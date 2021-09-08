@@ -1,10 +1,13 @@
 package com.example.looprecyclerview.manager;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class VerticalLoopLayoutManager extends RecyclerView.LayoutManager {
+
+    private final static String TAG = "recyclerViews_";
 
     @Override
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
@@ -131,18 +134,19 @@ public class VerticalLoopLayoutManager extends RecyclerView.LayoutManager {
     }
 
     private void recyclerViews(int dy, RecyclerView.Recycler recycler){
-        int itemCount = getItemCount();
-        for(int i = 0; i < itemCount; i++){
+        for(int i = 0; i < getItemCount(); i++){
             View childView = getChildAt(i);
             if(childView == null){
                 continue;
             }
             if(dy > 0){
                 if(childView.getBottom() - getPaddingTop() <= 0){
+                    Log.e(TAG,"dy > 0");
                     removeAndRecycleView(childView,recycler);
                 }
             }else {
                 if(childView.getTop() - getPaddingBottom() >= getHeight()){
+                    Log.e(TAG,"dy < 0");
                     removeAndRecycleView(childView, recycler);
                 }
             }
@@ -177,7 +181,7 @@ public class VerticalLoopLayoutManager extends RecyclerView.LayoutManager {
         //目前每个item高度是一样的
         int curFirstVisiblePosition = -1;
         int itemHeight = 0;
-        //获取第一个可见View;
+        //获取第一个可见childView;
         View anchorView = getChildAt(0);
         if(anchorView != null){
             curFirstVisiblePosition = getPosition(anchorView);
@@ -193,6 +197,7 @@ public class VerticalLoopLayoutManager extends RecyclerView.LayoutManager {
                 }
             }
         }
+        Log.e(TAG,"smoothScrollToPosition dy-->" + dy);
         recyclerView.smoothScrollBy(0, dy);
     }
 }

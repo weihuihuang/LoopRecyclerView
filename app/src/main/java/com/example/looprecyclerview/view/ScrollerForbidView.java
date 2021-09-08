@@ -39,7 +39,7 @@ public class ScrollerForbidView extends LinearLayout {
     public void test(){
         final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         List<String> dataList = new ArrayList<>();
-        for(int i = 0; i < 10; i ++){
+        for(int i = 0; i < 100; i ++){
             dataList.add("测试数据**-->" + i);
         }
         LoopAdapter loopAdapter = new LoopAdapter(dataList);
@@ -70,8 +70,6 @@ public class ScrollerForbidView extends LinearLayout {
             }
         };
         myHandler.sendEmptyMessageDelayed(LOOP_RECYCLER_VIEW_MSG, LOOP_INTERVAL);
-
-        recyclerView.requestDisallowInterceptTouchEvent(true);
     }
 
     public void release(){
@@ -80,44 +78,43 @@ public class ScrollerForbidView extends LinearLayout {
         }
     }
 
-    //打开事件拦截RecyclerView禁止滚动
-
-    float downX = 0;
-    float downY = 0;
-    boolean performClick = false;
-
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                downX = ev.getX();
-                downY = ev.getY();
-                performClick = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                int touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-                int differenceX = Math.abs((int)(ev.getX() - downX));
-                int differenceY = Math.abs((int)(ev.getY() - downY));
-                if(differenceX >= touchSlop || differenceY >= touchSlop){
-                    downX = 0;
-                    downY = 0;
-                    performClick = false;
-                }else {
-                    performClick = true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if(performClick){
-                    Toast toast = Toast.makeText(getContext(),"点击事件",Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-        }
-        return true;
-    }
+    //事件拦截RecyclerView禁止手动滚动
+//    float downX = 0;
+//    float downY = 0;
+//    boolean performClick = false;
+//
+//
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()){
+//            case MotionEvent.ACTION_DOWN:
+//                downX = ev.getX();
+//                downY = ev.getY();
+//                performClick = false;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                int touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+//                int differenceX = Math.abs((int)(ev.getX() - downX));
+//                int differenceY = Math.abs((int)(ev.getY() - downY));
+//                if(differenceX >= touchSlop || differenceY >= touchSlop){
+//                    downX = 0;
+//                    downY = 0;
+//                    performClick = false;
+//                }else {
+//                    performClick = true;
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                if(performClick){
+//                    Toast toast = Toast.makeText(getContext(),"点击事件",Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//        }
+//        return true;
+//    }
 }
